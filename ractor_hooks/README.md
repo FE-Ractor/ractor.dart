@@ -1,22 +1,3 @@
-A library for Dart developers.
+# Ractor_hooks
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
-
-## Usage
-
-A simple usage example:
-
-```dart
-import 'package:ractor_hooks/ractor_hooks.dart';
-
-main() {
-  var awesome = new Awesome();
-}
-```
-
-## Features and bugs
-
-Please file feature requests and bugs at the [issue tracker][tracker].
-
-[tracker]: http://example.com/issues/replaceme
+Inspired by React Hooks. Ractor want to provide simple and efficient way to manage your state. That's why it exists.
