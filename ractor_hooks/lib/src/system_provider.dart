@@ -7,14 +7,17 @@ class SystemProvider extends InheritedWidget {
   SystemProvider({
     Key key,
     @required System system,
-    List<Store Function()> stores = const [],
+    List<Store> stores = const [],
     @required Widget child,
   })  : assert(system != null),
         assert(child != null),
         _system = system,
         super(key: key, child: child) {
     SystemProvider._currentSystem = system;
-    stores.forEach((store) => _system.actorOf(store()));
+    stores.forEach((store) {
+      store.mountStatus = "global";
+      _system.actorOf(store);
+    });
   }
 
   /// A method that can be called by descendant Widgets to retrieve the Store
