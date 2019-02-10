@@ -11,7 +11,6 @@ abstract class Store<T> extends AbstractActor {
   }
 
   Unsubscribe subscribe(void Function(dynamic nextState) listener) {
-    listener(this.state);
     this.listeners.add(listener);
     return () {
       var index = this.listeners.indexOf(listener);

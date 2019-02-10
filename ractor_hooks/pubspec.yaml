@@ -1,6 +1,6 @@
-name: ractor
-description: A fresh and funny state management package.
-version: 0.0.3
+name: ractor_hooks
+description: Reacr hooks style for ractor.
+version: 0.0.1
 homepage: https://github.com/huangbinjie/ractor.dart
 author: corol <akira.binjie@gmail.com>
 
@@ -8,7 +8,9 @@ environment:
   sdk: '>=2.0.0 <3.0.0'
 
 dependencies:
-  dart_actor: ^0.0.4
+  flutter:
+    sdk: flutter
+  ractor: ^0.0.3
 
 dev_dependencies:
   pedantic: ^1.0.0
