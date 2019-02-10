@@ -1,10 +1,10 @@
 import 'package:ractor/ractor.dart';
-import './ractor_system.dart';
-import './ractor_element.dart';
+import './system_provider.dart';
+import './ractor_hook_element.dart';
 
 S useStore<S>(Store<S> _store) {
   var currentSystem = SystemProvider.getCurrentSystem();
-  var currentContext = RactorElement.getCurrentContext();
+  var currentContext = RactorHookElement.getCurrentContext();
 
   assert(currentSystem != null);
   assert(currentContext != null);

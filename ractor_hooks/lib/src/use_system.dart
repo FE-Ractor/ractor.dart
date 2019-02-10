@@ -1,5 +1,5 @@
 import 'package:ractor/ractor.dart';
-import './ractor_system.dart';
+import './system_provider.dart';
 
 System useSystem() {
   return SystemProvider.getCurrentSystem();

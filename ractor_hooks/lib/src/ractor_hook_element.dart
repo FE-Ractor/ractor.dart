@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ractor/ractor.dart';
-import './ractor_widget.dart';
+import './ractor_hook_widget.dart';
 
-class RactorElement extends ComponentElement {
-  RactorWidget _widget;
+class RactorHookElement extends ComponentElement {
+  RactorHookWidget _widget;
   Unsubscribe unsubscribe;
   int hookIndex = 0;
   List<Object> stateStack = [];
@@ -12,14 +12,14 @@ class RactorElement extends ComponentElement {
   bool _mounted = false;
 
   /// Creates an element that uses the given widget as its configuration.
-  RactorElement(RactorWidget widget)
+  RactorHookElement(RactorHookWidget widget)
       : _widget = widget,
         super(widget);
 
-  static RactorElement _currentContext;
+  static RactorHookElement _currentContext;
 
-  static RactorElement getCurrentContext() {
-    return RactorElement._currentContext;
+  static RactorHookElement getCurrentContext() {
+    return RactorHookElement._currentContext;
   }
 
   List<dynamic> useState<T>(T state) {
@@ -47,6 +47,7 @@ class RactorElement extends ComponentElement {
 
   @override
   Widget build() {
+    RactorHookElement._currentContext = this;
     var widget = _widget.build();
     if (!_mounted) {
       _mounted = true;
@@ -57,7 +58,6 @@ class RactorElement extends ComponentElement {
 
   /// cause of [mount] called before [build]. So create a method [didBuild] for react like didmount.
   void didBuild() {
-    RactorElement._currentContext = this;
     mountHooksCallbacks
         .forEach((callback) => unmountHooksCallbacks.add(callback()));
     hookIndex = 0;
