@@ -9,7 +9,6 @@ class RactorHookElement extends ComponentElement {
   List<Object> stateStack = [];
   List<void Function() Function()> mountHooksCallbacks = [];
   List<void Function()> unmountHooksCallbacks = [];
-  bool _mounted = false;
 
   /// Creates an element that uses the given widget as its configuration.
   RactorHookElement(RactorHookWidget widget)
@@ -22,6 +21,7 @@ class RactorHookElement extends ComponentElement {
     return RactorHookElement._currentContext;
   }
 
+  /// If can't find element at [stateStack](Bad State: No element), it means it's new state, and should be append to [stateStack]
   List<dynamic> useState<T>(T state) {
     try {
       var value = stateStack.elementAt(hookIndex);
@@ -29,6 +29,7 @@ class RactorHookElement extends ComponentElement {
         stateStack.replaceRange(hookIndex, hookIndex + 1, [nextState]);
       }
 
+      hookIndex++;
       return [value, setState];
     } catch (e) {
       stateStack.add(state);
@@ -49,15 +50,12 @@ class RactorHookElement extends ComponentElement {
   Widget build() {
     RactorHookElement._currentContext = this;
     var widget = _widget.build();
-    if (!_mounted) {
-      _mounted = true;
-      didBuild();
-    }
+    didUpdate();
     return widget;
   }
 
-  /// cause of [mount] called before [build]. So create a method [didBuild] for react like didmount.
-  void didBuild() {
+  /// cause of [mount] called before [build]. So create a method [didUpdate] for react like didUpdate.
+  void didUpdate() {
     mountHooksCallbacks
         .forEach((callback) => unmountHooksCallbacks.add(callback()));
     hookIndex = 0;
