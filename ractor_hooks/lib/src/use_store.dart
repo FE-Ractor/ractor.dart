@@ -1,13 +1,11 @@
+import 'package:flutter_hooks2/flutter_hooks2.dart';
 import 'package:ractor/ractor.dart';
 import './system_provider.dart';
-import './ractor_hook_element.dart';
 
 S useStore<S>(Store<S> _store) {
-  var currentSystem = SystemProvider.getCurrentSystem();
-  var currentContext = RactorHookElement.getCurrentContext();
+  var currentSystem = SystemProvider.currentSystem;
 
   assert(currentSystem != null);
-  assert(currentContext != null);
 
   var storeRef = currentSystem.get(_store.runtimeType);
   Store store = storeRef != null
@@ -17,15 +15,12 @@ S useStore<S>(Store<S> _store) {
       ? store.mountStatus
       : storeRef != null ? "global" : "local";
 
-  var _result = currentContext.useState(store.state);
-  var state = _result[0];
-  var setState = _result[1];
+  StateContainer stateContainer = useState(store.state);
 
-  currentContext.useMount(() {
+  useEffect(() {
     var dispose = store.subscribe((nextState) {
-      if (nextState != state) {
-        setState(nextState);
-        currentContext.markNeedsBuild();
+      if (nextState != stateContainer.state) {
+        stateContainer.setState(nextState);
       }
     });
     return () {
@@ -34,7 +29,7 @@ S useStore<S>(Store<S> _store) {
         store.context.stop();
       }
     };
-  });
+  }, []);
 
-  return state;
+  return stateContainer.state;
 }

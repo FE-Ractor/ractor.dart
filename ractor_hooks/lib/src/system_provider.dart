@@ -13,48 +13,14 @@ class SystemProvider extends InheritedWidget {
         assert(child != null),
         _system = system,
         super(key: key, child: child) {
-    SystemProvider._currentSystem = system;
+    SystemProvider.currentSystem = system;
     stores.forEach((store) {
       store.mountStatus = "global";
       _system.actorOf(store);
     });
   }
 
-  /// A method that can be called by descendant Widgets to retrieve the Store
-  /// from the StoreProvider.
-  ///
-  /// Important: When using this method, pass through complete type information
-  /// or Flutter will be unable to find the correct StoreProvider!
-  ///
-  /// ### Example
-  ///
-  /// ```
-  /// class MyWidget extends StatelessWidget {
-  ///   @override
-  ///   Widget build(BuildContext context) {
-  ///     final system = SystemProvider.of(context);
-  ///
-  ///     return Text('something');
-  ///   }
-  /// }
-  /// ```
-  static System of(BuildContext context) {
-    final type = _typeOf<SystemProvider>();
-    final provider =
-        context.inheritFromWidgetOfExactType(type) as SystemProvider;
-
-    if (provider == null) throw Error;
-    return provider._system;
-  }
-
-  static System _currentSystem;
-
-  static System getCurrentSystem() {
-    return SystemProvider._currentSystem;
-  }
-
-  // Workaround to capture generics
-  static Type _typeOf<T>() => T;
+  static System currentSystem;
 
   @override
   bool updateShouldNotify(SystemProvider oldWidget) =>

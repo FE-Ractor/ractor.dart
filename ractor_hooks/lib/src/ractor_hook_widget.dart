@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import './ractor_hook_element.dart';
+import 'package:flutter_hooks2/flutter_hooks2.dart';
 
-abstract class RactorHookWidget extends Widget {
+abstract class RactorHookWidget extends HookWidget {
   const RactorHookWidget({Key key}) : super(key: key);
-
-  @override
-  RactorHookElement createElement() {
-    return RactorHookElement(this);
-  }
 
   Widget build();
 }
