@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   ractor: ^0.0.3
-  flutter_hooks2: ^1.0.0
+  frhooks: ^1.0.0
 
 dev_dependencies:
   pedantic: ^1.0.0
