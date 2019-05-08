@@ -1,9 +1,9 @@
 import 'package:frhooks/frhooks.dart';
 import 'package:ractor/ractor.dart';
-import './system_provider.dart';
+import 'package:ractor_hooks/ractor_hooks.dart';
 
 S useStore<S>(Store<S> _store) {
-  var currentSystem = SystemProvider.currentSystem;
+  var currentSystem = useSystem();
 
   assert(currentSystem != null);
 
