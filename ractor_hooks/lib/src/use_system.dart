@@ -10,6 +10,7 @@ System useSystem() {
       debugPrint(
           "Can't find context on this element tree, make sure SystemProvider is ancestor of your widget: ${context.widget.runtimeType.toString()}");
     }
+    return true;
   }());
   return SystemProvider.of(context).system;
 }
