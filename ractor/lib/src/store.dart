@@ -1,16 +1,38 @@
+import 'dart:async';
+
 import 'package:dart_actor/dart_actor.dart';
 
-abstract class Store<T> extends AbstractActor {
+class _RactorError implements Exception {
+  String message;
+  _RactorError(this.message);
+}
+
+abstract class Store extends AbstractActor {
   final List listeners = [];
-  T state;
+
+  /// indicate whether this Store is "global", or "local".
   String mountStatus;
 
-  void setState(dynamic nextState) {
-    this.state = nextState;
-    this.listeners.forEach((listener) => listener(this.state));
+  /// ```dart
+  /// setState(() {
+  ///  count++
+  /// });
+  /// ```
+  void setState(void Function() fn) {
+    assert(fn != null);
+    final dynamic result = fn() as dynamic;
+    assert(() {
+      if (result is Future) {
+        throw _RactorError('setState() callback argument returned a Future.\n'
+            'The setState() method on $this was called with a closure or method that '
+            'returned a Future. Maybe it is marked as "async".\n');
+      }
+      return true;
+    }());
+    this.listeners.forEach((listener) => listener(this));
   }
 
-  Unsubscribe subscribe(void Function(dynamic nextState) listener) {
+  Unsubscribe subscribe(void Function() listener) {
     this.listeners.add(listener);
     return () {
       var index = this.listeners.indexOf(listener);
