@@ -29,7 +29,7 @@ abstract class Store extends AbstractActor {
       }
       return true;
     }());
-    this.listeners.forEach((listener) => listener(this));
+    this.listeners.forEach((listener) => listener());
   }
 
   Unsubscribe subscribe(void Function() listener) {
