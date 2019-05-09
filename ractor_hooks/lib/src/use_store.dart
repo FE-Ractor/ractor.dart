@@ -2,7 +2,7 @@ import 'package:frhooks/frhooks.dart';
 import 'package:ractor/ractor.dart';
 import 'package:ractor_hooks/ractor_hooks.dart';
 
-S useStore<S>(Store<S> _store) {
+S useStore<S extends Store>(S _store) {
   var currentSystem = useSystem();
 
   assert(currentSystem != null);
@@ -15,13 +15,11 @@ S useStore<S>(Store<S> _store) {
       ? store.mountStatus
       : storeRef != null ? "global" : "local";
 
-  StateContainer stateContainer = useState(store.state);
+  StateContainer stateContainer = useState(store);
 
   useEffect(() {
-    var dispose = store.subscribe((nextState) {
-      if (nextState != stateContainer.state) {
-        stateContainer.setState(nextState);
-      }
+    var dispose = store.subscribe(() {
+      stateContainer.setState(stateContainer.state);
     });
     return () {
       dispose();
