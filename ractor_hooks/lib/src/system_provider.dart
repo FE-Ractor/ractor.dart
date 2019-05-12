@@ -15,7 +15,7 @@ class _SystemProviderWidget extends RactorHookWidget {
 
   static System currentSystem;
 
-  Widget build() {
+  Widget build(BuildContext context) {
     final system = useSystem();
 
     useEffect(() {
