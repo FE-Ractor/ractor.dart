@@ -2,24 +2,26 @@ import 'package:frhooks/frhooks.dart';
 import 'package:ractor/ractor.dart';
 import 'package:ractor_hooks/ractor_hooks.dart';
 
-S useStore<S extends Store>(S _store) {
-  var currentSystem = useSystem();
+S useStore<S extends Store>(S Function() createStore) {
+  final currentSystem = useSystem();
+  final currentContext = useContext();
 
   assert(currentSystem != null);
+  assert(currentContext != null);
 
-  var storeRef = currentSystem.get(_store.runtimeType);
-  Store store = storeRef != null
-      ? storeRef.getInstance()
-      : currentSystem.actorOf(_store).getInstance();
-  store.mountStatus = store.mountStatus != null
-      ? store.mountStatus
-      : storeRef != null ? "global" : "local";
-
-  StateContainer stateContainer = useState(store);
+  final _store = useMemo(createStore);
 
   useEffect(() {
-    var dispose = store.subscribe(() {
-      stateContainer.setState(stateContainer.state);
+    final storeRef = currentSystem.get(_store.runtimeType);
+    Store store = storeRef != null
+        ? storeRef.getInstance()
+        : currentSystem.actorOf(_store).getInstance();
+    store.mountStatus = store.mountStatus != null
+        ? store.mountStatus
+        : storeRef != null ? "global" : "local";
+
+    final dispose = store.subscribe(() {
+      currentContext.markNeedsBuild();
     });
     return () {
       dispose();
@@ -29,5 +31,5 @@ S useStore<S extends Store>(S _store) {
     };
   }, []);
 
-  return stateContainer.state;
+  return _store;
 }
