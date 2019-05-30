@@ -1,6 +1,6 @@
 name: ractor_hooks
 description: Reacr hooks style for ractor.
-version: 1.2.1
+version: 1.2.2
 homepage: https://github.com/huangbinjie/ractor.dart
 author: corol <akira.binjie@gmail.com>
 
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   ractor: ^1.0.0
-  frhooks: ^1.2.4
+  frhooks: ^1.2.6
   dart_actor: ^0.0.5
 
 dev_dependencies:

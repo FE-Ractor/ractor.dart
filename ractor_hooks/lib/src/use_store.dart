@@ -3,7 +3,7 @@ import 'package:frhooks/frhooks.dart';
 import 'package:ractor/ractor.dart';
 import 'package:ractor_hooks/ractor_hooks.dart';
 
-S useStore<S extends Store>() {
+S useStore<S extends Store>(S _store) {
   final currentSystem = useSystem();
   final currentContext = useContext();
 
@@ -14,7 +14,7 @@ S useStore<S extends Store>() {
 
   Store store = storeRef != null
       ? storeRef.getInstance()
-      : currentSystem.actorOf(S as AbstractActor).getInstance();
+      : currentSystem.actorOf(_store).getInstance();
   store.mountStatus = store.mountStatus != null
       ? store.mountStatus
       : storeRef != null ? "global" : "local";
