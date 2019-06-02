@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:frhooks/frhooks.dart';
 import 'package:ractor/ractor.dart';
-import 'package:ractor_hooks/ractor_hooks.dart';
 
-class _SystemProviderWidget extends RactorHookWidget {
+class _SystemProviderWidget extends StatefulWidget {
   final Widget child;
+  final System system;
   final List<Store> stores;
 
   const _SystemProviderWidget({
     Key key,
+    @required this.system,
     this.stores = const [],
     @required this.child,
   }) : super(key: key);
 
-  static System currentSystem;
+  @override
+  State<StatefulWidget> createState() {
+    return _SystemProviderWidgetState();
+  }
+}
 
+class _SystemProviderWidgetState extends State<_SystemProviderWidget> {
+  @override
+  void initState() {
+    widget.stores.forEach((store) {
+      store.mountStatus = "global";
+      widget.system.actorOf(store);
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final system = useSystem();
-
-    useEffect(() {
-      stores.forEach((store) {
-        store.mountStatus = "global";
-        system.actorOf(store);
-      });
-    }, []);
-
-    return this.child;
+    return widget.child;
   }
 }
 
@@ -41,7 +47,8 @@ class SystemProvider extends InheritedWidget {
         assert(child != null),
         super(
             key: key,
-            child: _SystemProviderWidget(child: child, stores: stores));
+            child: _SystemProviderWidget(
+                system: system, child: child, stores: stores));
 
   static SystemProvider of(BuildContext context) {
     return context.inheritFromWidgetOfExactType(SystemProvider);
