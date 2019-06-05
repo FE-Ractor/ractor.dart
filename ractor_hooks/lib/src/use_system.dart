@@ -9,7 +9,7 @@ System useSystem() {
   assert(() {
     if (_systemProvider == null) {
       debugPrint(
-          "Can't find context on this element tree, make sure SystemProvider is ancestor of your widget: ${context.widget.runtimeType.toString()}");
+          "Can't find context on this element tree, make sure SystemProvider is ancestor of your widget: ${context.widget}");
           return false;
     }
     return true;
