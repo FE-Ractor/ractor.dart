@@ -1,4 +1,3 @@
-import 'package:dart_actor/dart_actor.dart';
 import 'package:frhooks/frhooks.dart';
 import 'package:ractor/ractor.dart';
 import 'package:ractor_hooks/ractor_hooks.dart';
@@ -18,6 +17,7 @@ S useStore<S extends Store>(S _store) {
   store.mountStatus = store.mountStatus != null
       ? store.mountStatus
       : storeRef != null ? "global" : "local";
+  store.context.become(_store.createReceive());
 
   useEffect(() {
     final dispose = store.subscribe(() {
