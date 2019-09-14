@@ -17,12 +17,12 @@ S useStore<S extends Store>(S _store) {
   store.mountStatus = store.mountStatus != null
       ? store.mountStatus
       : storeRef != null ? "global" : "local";
-  store.context.become(_store.createReceive());
 
   useEffect(() {
     final dispose = store.subscribe(() {
       currentContext.markNeedsBuild();
     });
+
     return () {
       dispose();
       if (store.mountStatus == "local") {

@@ -1,6 +1,6 @@
 name: ractor_hooks
 description: Reacr hooks style for ractor.
-version: 1.3.0
+version: 1.3.1
 homepage: https://github.com/huangbinjie/ractor.dart
 author: corol <akira.binjie@gmail.com>
 
