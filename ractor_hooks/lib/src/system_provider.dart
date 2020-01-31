@@ -22,11 +22,20 @@ class _SystemProviderWidget extends StatefulWidget {
 class _SystemProviderWidgetState extends State<_SystemProviderWidget> {
   @override
   void initState() {
+    super.initState();
     widget.stores.forEach((store) {
       store.mountStatus = "global";
       widget.system.actorOf(store);
     });
-    super.initState();
+  }
+
+  /// store 是否全局取决于 SystemProvider 是否会被卸载。嵌套 SystemProvider 的情况有卸载 store 的需求。
+  @override
+  void dispose() {
+    super.dispose();
+    widget.stores.forEach((store) {
+      widget.system.get(store.runtimeType).getContext().stop();
+    });
   }
 
   @override
