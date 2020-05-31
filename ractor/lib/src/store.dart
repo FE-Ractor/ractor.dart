@@ -36,7 +36,9 @@ abstract class Store extends AbstractActor {
     this.listeners.add(listener);
     return () {
       var index = this.listeners.indexOf(listener);
-      this.listeners.removeAt(index);
+      if (index > -1) {
+        this.listeners.removeAt(index);
+      }
     };
   }
 

@@ -1,6 +1,6 @@
 name: ractor
 description: A fresh and funny state management package.
-version: 1.1.0
+version: 1.1.2
 homepage: https://github.com/huangbinjie/ractor.dart
 author: corol <akira.binjie@gmail.com>
 
